@@ -1,0 +1,67 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Reflection.Emit;
+using System.Runtime.Remoting.Contexts;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace PROBA2
+{
+    public partial class Form2 : Form
+    {
+        public string connect = "Data Source=(localdb)\MSSQLLocalDB; database = DEMOO2 ;Integrated Security=True;TrustServerCertificate=True";
+
+        public Form2(int role)
+        {
+            InitializeComponent();
+
+            // Показываем роль
+            if (role == 1)
+                label1.Text = "Администратор";
+            else if (role == 2)
+                label1.Text = "Менеджер";
+            else if (role == 3)
+                label1.Text = "Клиент";
+            else
+                label1.Text = "Роль не определена";
+
+            // Загружаем таблицу в DataGridView
+            LoadTable();
+        }
+
+        private void LoadTable()
+        {
+            SqlConnection con = new SqlConnection(connect);
+            con.Open();
+
+            string zapros = "SELECT * FROM users";
+            SqlDataAdapter adapter = new SqlDataAdapter(zapros, con);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            dataGridView1.DataSource = dt; 
+
+            con.Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form1 fr = new Form1();
+            fr.Show();
+            this.Hide();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Form3 f3 = new Form3();
+            f3.Show();
+            this.Hide();
+        }
+    }
+}
